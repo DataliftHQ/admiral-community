@@ -1,0 +1,25 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Ask a Question
+    url: https://github.com/DataliftHQ/admiral-community/discussions/new?category=q-a
+    about: Get help from the Admiral community (Q&A format with accepted answers)
+
+  - name: 💡 Share an Idea or Discuss a Feature
+    url: https://github.com/DataliftHQ/admiral-community/discussions/new?category=ideas
+    about: Propose new features and gather community feedback before opening an issue
+
+  - name: 🎉 Show and Tell
+    url: https://github.com/DataliftHQ/admiral-community/discussions/new?category=show-and-tell
+    about: Share what you're building with Admiral
+
+  - name: 📖 Documentation
+    url: https://admiral.io/docs
+    about: Browse our documentation for guides, tutorials, and API reference
+
+  - name: 🔒 Report a Security Vulnerability
+    url: mailto:security@admiral.io
+    about: Report security issues privately (do NOT create public issues for security vulnerabilities)
+
+  - name: 📧 Contact Support
+    url: mailto:hello@admiral.io
+    about: Email us for general questions or enterprise support inquiries
