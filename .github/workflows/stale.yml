@@ -1,0 +1,85 @@
+name: Close stale issues and PRs
+
+on:
+  schedule:
+    # Run daily at 1:00 AM UTC
+    - cron: "0 1 * * *"
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mark and close stale issues and PRs
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Stale issue settings
+          days-before-issue-stale: 30
+          days-before-issue-close: 7
+          stale-issue-label: "stale"
+          stale-issue-message: |
+            This issue has been automatically marked as stale because it has not had any activity for 30 days.
+
+            It will be closed in 7 days if no further activity occurs.
+
+            If this issue is still relevant, please:
+            - Add a comment to keep it open
+            - Provide any additional context or updates
+            - Remove the `stale` label
+
+            Thank you for your contributions to Admiral! 🚀
+          close-issue-message: |
+            This issue has been automatically closed due to inactivity.
+
+            If you believe this issue is still relevant, please reopen it or create a new issue with updated information.
+
+            For questions, please use our [Discussions](https://github.com/DataliftHQ/admiral-community/discussions).
+
+          # Stale PR settings
+          days-before-pr-stale: 14
+          days-before-pr-close: 7
+          stale-pr-label: "stale"
+          stale-pr-message: |
+            This pull request has been automatically marked as stale because it has not had any activity for 14 days.
+
+            It will be closed in 7 days if no further activity occurs.
+
+            If you're still working on this, please add a comment to let us know!
+          close-pr-message: |
+            This pull request has been automatically closed due to inactivity.
+
+            If you'd like to continue this work, please reopen the PR or create a new one.
+
+          # Issues/PRs with these labels will never be marked stale
+          exempt-issue-labels: "pinned,security,critical,in-progress,blocked"
+          exempt-pr-labels: "pinned,security,in-progress,blocked"
+
+          # Only issues/PRs with ALL these labels will be marked stale
+          # Leave empty to apply to all
+          only-labels: ""
+          only-issue-labels: ""
+          only-pr-labels: ""
+
+          # Don't mark as stale if there are assignees
+          exempt-all-issue-assignees: true
+          exempt-all-pr-assignees: true
+
+          # Remove stale label when issue/PR is updated
+          remove-stale-when-updated: true
+          remove-issue-stale-when-updated: true
+          remove-pr-stale-when-updated: true
+
+          # Debugging (set to true to see what would happen without actually doing it)
+          debug-only: false
+
+          # Operation limits (prevent hitting API rate limits)
+          operations-per-run: 100
+
+          # Ascending order (oldest first)
+          ascending: true
