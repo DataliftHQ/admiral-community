@@ -1,35 +1,124 @@
-name: Auto-label issues
+name: Auto-label Issues and PRs
+
 on:
   issues:
     types: [opened]
+  pull_request:
+    types: [opened]
 
 jobs:
-  label:
+  auto-label:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
     steps:
-      - uses: actions/github-script@v7
+      - name: Label based on content
+        uses: actions/github-script@v7
         with:
           script: |
-            const title = context.payload.issue.title.toLowerCase();
-            const body = context.payload.issue.body?.toLowerCase() || '';
+            const item = context.payload.issue || context.payload.pull_request;
+            const isIssue = !!context.payload.issue;
+            const title = item.title.toLowerCase();
+            const body = (item.body || '').toLowerCase();
             const labels = [];
 
             // Component detection
-            if (title.includes('terraform') || body.includes('terraform')) labels.push('terraform');
-            if (title.includes('kubernetes') || title.includes('k8s')) labels.push('kubernetes');
-            if (title.includes('deployment') || title.includes('deploy')) labels.push('deployment');
-            if (title.includes('infrastructure') || title.includes('provision')) labels.push('infrastructure');
+            if (title.includes('terraform') || body.includes('terraform')) {
+              labels.push('terraform');
+            }
+            if (title.includes('kubernetes') || title.includes('k8s') || body.includes('kubernetes')) {
+              labels.push('kubernetes');
+            }
+            if (title.includes('deploy') || body.includes('deployment')) {
+              labels.push('deployment');
+            }
+            if (title.includes('infrastructure') || title.includes('provision')) {
+              labels.push('infrastructure');
+            }
+            if (title.includes('api') || body.includes('api endpoint')) {
+              labels.push('api');
+            }
+            if (title.includes('ui') || title.includes('interface') || body.includes('user interface')) {
+              labels.push('ui');
+            }
+            if (title.includes('cli') || body.includes('command line')) {
+              labels.push('cli');
+            }
+            if (title.includes('agent') || body.includes('kubernetes agent')) {
+              labels.push('agents');
+            }
+            if (title.includes('auth') || title.includes('login') || body.includes('authentication')) {
+              labels.push('auth');
+            }
+            if (title.includes('security') || body.includes('vulnerability')) {
+              labels.push('security');
+            }
+            if (title.includes('performance') || title.includes('slow') || body.includes('performance')) {
+              labels.push('performance');
+            }
 
-            // Cloud detection
-            if (body.includes('aws') || body.includes('eks')) labels.push('aws');
-            if (body.includes('gcp') || body.includes('gke')) labels.push('gcp');
-            if (body.includes('azure') || body.includes('aks')) labels.push('azure');
+            // Cloud provider detection
+            if (body.includes('aws') || body.includes('eks') || body.includes('amazon')) {
+              labels.push('aws');
+            }
+            if (body.includes('gcp') || body.includes('gke') || body.includes('google cloud')) {
+              labels.push('gcp');
+            }
+            if (body.includes('azure') || body.includes('aks') || body.includes('microsoft')) {
+              labels.push('azure');
+            }
+            if (body.includes('on-premises') || body.includes('on-prem') || body.includes('self-hosted')) {
+              labels.push('on-premises');
+            }
 
+            // Priority detection (only for issues)
+            if (isIssue) {
+              if (body.includes('critical - blocking') || (body.includes('production') && body.includes('down'))) {
+                labels.push('critical');
+              } else if (body.includes('high - significantly')) {
+                labels.push('high');
+              } else if (body.includes('low - minor')) {
+                labels.push('low');
+              } else if (body.includes('medium - nice to have')) {
+                labels.push('medium');
+              }
+            }
+
+            // Documentation
+            if (title.includes('doc') || title.includes('readme') || body.includes('documentation')) {
+              labels.push('documentation');
+            }
+
+
+            // Apply labels
             if (labels.length > 0) {
-              await github.rest.issues.addLabels({
+              const params = isIssue ? {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.issue.number,
+                issue_number: item.number,
                 labels: labels
-              });
+              } : {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: item.number,
+                labels: labels
+              };
+              
+              await github.rest.issues.addLabels(params);
+              
+              console.log(`Added labels: ${labels.join(', ')}`);
             }
+
+      - name: Add needs-triage to issues
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.issue.number,
+              labels: ['needs-triage']
+            });
