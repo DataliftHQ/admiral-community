@@ -42,32 +42,36 @@ jobs:
 
             // If this is their first contribution
             if (contributions.length === 1) {
-              const message = isIssue
-                ? `👋 Welcome to the Admiral community, @${creator}!
+              const issueMessage = [
+                `👋 Welcome to the Admiral community, @${creator}!`,
+                '',
+                'Thank you for opening your first issue! A team member will review it soon.',
+                '',
+                'While you wait, you might want to:',
+                '- 📖 Check out our [documentation](https://docs.admiral.io)',
+                '- 💬 Join the [discussion](https://github.com/DataliftHQ/admiral-community/discussions)',
+                '- ⭐ Star this repo if you find Admiral useful',
+                '',
+                'We appreciate your contribution! 🚀'
+              ].join('\n');
 
-Thank you for opening your first issue! A team member will review it soon.
-
-While you wait, you might want to:
-- 📖 Check out our [documentation](https://docs.admiral.io)
-- 💬 Join the [discussion](https://github.com/DataliftHQ/admiral-community/discussions)
-- ⭐ Star this repo if you find Admiral useful
-
-We appreciate your contribution! 🚀`
-                : `🎉 Thank you for your first contribution, @${creator}!
-
-A team member will review your PR soon.
-
-Please make sure:
-- ✅ Your changes follow our [contributing guidelines](https://github.com/DataliftHQ/admiral-community/blob/main/CONTRIBUTING.md)
-- ✅ All tests pass
-- ✅ You've added any necessary documentation
-
-We're excited to have you as part of the Admiral community! 🙌`;
+              const prMessage = [
+                `🎉 Thank you for your first contribution, @${creator}!`,
+                '',
+                'A team member will review your PR soon.',
+                '',
+                'Please make sure:',
+                '- ✅ Your changes follow our [contributing guidelines](https://github.com/DataliftHQ/admiral-community/blob/main/CONTRIBUTING.md)',
+                '- ✅ All tests pass',
+                '- ✅ You\'ve added any necessary documentation',
+                '',
+                'We\'re excited to have you as part of the Admiral community! 🙌'
+              ].join('\n');
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: item.number,
-                body: message
+                body: isIssue ? issueMessage : prMessage
               });
             }
