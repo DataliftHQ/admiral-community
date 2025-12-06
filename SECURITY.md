@@ -319,7 +319,7 @@ While we work to keep Admiral secure, here are recommendations for users:
 ## Security Resources
 
 - **Security Advisories:** [GitHub Security Advisories](https://github.com/DataliftHQ/admiral-community/security/advisories)
-- **Security Documentation:** [docs.admiral.io/security](https://docs.admiral.io/security)
+- **Security Documentation:** [admiral.io/docs/security](https://admiral.io/docs/security)
 - **Compliance:** [admiral.io/compliance](https://admiral.io/compliance)
 - **Status Page:** [status.admiral.io](https://status.admiral.io)
 
@@ -358,7 +358,7 @@ Want to be listed here? Help us keep Admiral secure by reporting vulnerabilities
 
 **Thank you for helping keep Admiral and our users safe.**
 
-[Report a Vulnerability](mailto:security@admiral.io) • [Security Documentation](https://docs.admiral.io/security)
+[Report a Vulnerability](mailto:security@admiral.io) • [Security Documentation](https://admiral.io/docs/security)
 
 </div>
 ```
