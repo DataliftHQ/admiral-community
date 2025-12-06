@@ -1,0 +1,186 @@
+name: 💡 Feature Request
+description: Suggest a new feature or improvement for Admiral
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! 💡
+
+        Before submitting:
+        - Search [existing feature requests](https://github.com/DataliftHQ/admiral-community/issues?q=label%3Aenhancement) to avoid duplicates
+        - Check the [public roadmap](https://github.com/orgs/DataliftHQ/projects/1) to see if it's already planned
+        - Consider starting a [Discussion](https://github.com/DataliftHQ/admiral-community/discussions/categories/ideas) first to gather community feedback
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: |
+        Describe the problem or pain point this feature would address.
+        What are you trying to accomplish that's currently difficult or impossible?
+      placeholder: |
+        As a platform engineer, I need to enforce cost limits on infrastructure provisioning, but Admiral currently doesn't provide a way to set budget caps per team or environment. This makes it difficult to prevent runaway costs when developers provision expensive resources.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: How would you like Admiral to solve this problem?
+      placeholder: |
+        Add a "Budget & Cost Controls" section to Admiral where platform teams can:
+
+        1. Set monthly budget limits per team or environment
+        2. Configure spending alerts at 50%, 75%, 90% thresholds
+        3. Require approval for resources exceeding a cost threshold (e.g., >$500/month)
+        4. Display estimated monthly cost before provisioning
+        5. Show current month's spending in real-time dashboard
+
+        When a team reaches their budget limit, Admiral would:
+        - Block new infrastructure provisioning
+        - Send notifications to team leads and platform team
+        - Provide option to request budget increase
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        Have you considered any alternative solutions or workarounds?
+        What are you doing today to work around this limitation?
+      placeholder: |
+        Current workarounds:
+        - Manually reviewing infrastructure costs in AWS Cost Explorer weekly
+        - Using Terraform cost estimation tools before approving modules
+        - Sending monthly cost reports to team leads
+
+        Alternative solutions:
+        - Using third-party cloud cost management tools (CloudHealth, Infracost)
+        - Writing custom scripts to check AWS billing APIs
+
+        Why these aren't ideal:
+        - Not integrated into the Admiral workflow
+        - Reactive rather than proactive
+        - Requires manual enforcement
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which area does this feature affect?
+      description: Select the Admiral component this feature relates to
+      options:
+        - Infrastructure Provisioning
+        - Application Deployment
+        - Kubernetes Agents
+        - Web UI
+        - API
+        - CLI
+        - Module Catalog
+        - Variable Management
+        - Authentication/Authorization
+        - Monitoring & Observability
+        - Cost Management
+        - Policies & Governance
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: Who would benefit from this feature?
+      description: Which user personas would find this valuable?
+      multiple: true
+      options:
+        - Platform Engineers
+        - Application Developers
+        - DevOps Teams
+        - Engineering Leaders/Managers
+        - Security Teams
+        - FinOps Teams
+        - All Users
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How important is this to you?
+      description: Help us prioritize by indicating the impact this would have
+      options:
+        - Critical - Blocking our adoption of Admiral
+        - High - Significantly improves our workflow
+        - Medium - Nice to have, would use regularly
+        - Low - Minor improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Detailed use case
+      description: |
+        Walk us through a specific scenario where this feature would help.
+        Be as concrete as possible.
+      placeholder: |
+        **Scenario:**
+        Our engineering org has 8 teams, each with their own AWS account and infrastructure budget. The platform team manages infrastructure provisioning through Admiral.
+
+        **Current workflow:**
+        1. Team requests infrastructure via Admiral
+        2. Platform team manually checks if team has budget
+        3. If over budget, platform team denies request and notifies team lead
+        4. Team lead has to request budget increase from finance
+        5. Process takes 3-5 days
+
+        **Desired workflow with this feature:**
+        1. Team requests infrastructure via Admiral
+        2. Admiral automatically checks budget status
+        3. If under budget, provisions immediately
+        4. If over budget, shows "Budget exceeded" message with:
+           - Current spending: $4,800 / $5,000 (96%)
+           - Requested resource cost: $350/month
+           - Option to "Request Budget Increase" (notifies team lead + platform team)
+        5. Team lead can approve budget increase in Admiral UI
+        6. Process takes hours instead of days
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups or examples
+      description: |
+        If you have mockups, wireframes, or examples from other tools, share them here.
+        Visual examples help us understand your vision.
+      placeholder: |
+        Drag and drop images or paste URLs
+
+        Example from other tool:
+        - [Infracost budget alerts](https://example.com/screenshot.png)
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Would you be willing to help implement this?
+      description: We welcome contributions! No pressure, but let us know if you'd like to be involved.
+      options:
+        - label: I'd like to help implement this feature
+        - label: I can provide feedback during development
+        - label: I can help test beta versions
+        - label: I can contribute documentation
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have searched for similar feature requests and didn't find a duplicate
+          required: true
+        - label: I have checked the public roadmap to see if this is already planned
+          required: true
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/DataliftHQ/admiral-community/blob/main/CODE_OF_CONDUCT.md)
+          required: true

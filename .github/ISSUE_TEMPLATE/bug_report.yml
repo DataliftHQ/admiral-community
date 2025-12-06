@@ -1,0 +1,194 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in Admiral
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this bug! 🐛
+
+        Before submitting, please:
+        - Search [existing issues](https://github.com/DataliftHQ/admiral-community/issues) to avoid duplicates
+        - Check our [documentation](https://docs.admiral.io) for common solutions
+        - For questions, use [Discussions](https://github.com/DataliftHQ/admiral-community/discussions) instead
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected to happen instead.
+      placeholder: |
+        When I try to provision a Redis instance using the "redis-basic" module, the deployment fails with a timeout error. I expected the Redis instance to be created successfully within 5 minutes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Detailed steps to reproduce the issue. The more specific, the faster we can help.
+      placeholder: |
+        1. Navigate to Infrastructure > Provision New
+        2. Select "redis-basic" module from catalog
+        3. Configure with the following settings:
+           - Environment: staging
+           - Instance type: cache.t3.micro
+           - Region: us-east-1
+        4. Click "Deploy"
+        5. Deployment hangs at "Creating ElastiCache cluster" for 10+ minutes
+        6. Eventually fails with timeout error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: Redis instance should be provisioned successfully within 5 minutes
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+      placeholder: Deployment times out after 10 minutes with error "Failed to provision ElastiCache cluster"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Admiral Version
+      description: What version of Admiral are you using?
+      placeholder: "e.g., 1.2.3 (check in Settings > About)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component is affected?
+      description: Select the Admiral component where you're experiencing the issue
+      options:
+        - Infrastructure Provisioning
+        - Application Deployment
+        - Kubernetes Agents
+        - Web UI
+        - API
+        - CLI
+        - Terraform Module Execution
+        - Variable Management
+        - Authentication/Authorization
+        - Other / Not Sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cloud-provider
+    attributes:
+      label: Cloud Provider
+      description: Which cloud provider are you using?
+      options:
+        - AWS
+        - Google Cloud (GCP)
+        - Azure
+        - On-Premises
+        - Multi-Cloud
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kubernetes
+    attributes:
+      label: Kubernetes Distribution
+      description: Which Kubernetes distribution are you using?
+      options:
+        - AWS EKS
+        - Google GKE
+        - Azure AKS
+        - Rancher
+        - OpenShift
+        - Vanilla Kubernetes
+        - K3s
+        - Other
+        - Not applicable
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: |
+        Please paste any relevant logs, error messages, or stack traces.
+        **Important:** Remove any sensitive information (API keys, passwords, internal URLs, etc.)
+      render: shell
+      placeholder: |
+        Error: timeout waiting for ElastiCache cluster to become available
+        at TerraformExecutor.waitForResource (/app/executor.js:234)
+        at async RedisModule.provision (/app/modules/redis.js:89)
+
+  - type: textarea
+    id: terraform-module
+    attributes:
+      label: Terraform Module Details (if applicable)
+      description: If this is related to infrastructure provisioning, provide module details
+      placeholder: |
+        Module: redis-basic
+        Version: 2.1.0
+        Source: internal-registry/modules/redis
+
+        Configuration:
+        - instance_type: cache.t3.micro
+        - engine_version: 7.0
+        - parameter_group: default.redis7
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain the problem
+      placeholder: Drag and drop images here or paste image URLs
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other context about the problem (browser version, network setup, recent changes, etc.)
+      placeholder: |
+        - This started happening after upgrading from v1.1.0 to v1.2.3
+        - Only occurs in our staging environment, production works fine
+        - We're behind a corporate proxy
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: How severe is this issue?
+      description: Help us prioritize by indicating the impact
+      options:
+        - Critical - Blocking production deployments
+        - High - Significantly impacting workflows
+        - Medium - Workaround exists but inconvenient
+        - Low - Minor annoyance
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched for similar issues and didn't find a duplicate
+          required: true
+        - label: I have removed any sensitive information from logs and screenshots
+          required: true
+        - label: I have provided enough information to reproduce the issue
+          required: true
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/DataliftHQ/admiral-community/blob/main/CODE_OF_CONDUCT.md)
+          required: true
