@@ -57,8 +57,8 @@ jobs:
             If you'd like to continue this work, please reopen the PR or create a new one.
 
           # Issues/PRs with these labels will never be marked stale
-          exempt-issue-labels: "pinned,security,critical,in-progress,blocked"
-          exempt-pr-labels: "pinned,security,in-progress,blocked"
+          exempt-issue-labels: "security,critical,in-progress,blocked"
+          exempt-pr-labels: "security,in-progress,blocked"
 
           # Only issues/PRs with ALL these labels will be marked stale
           # Leave empty to apply to all
