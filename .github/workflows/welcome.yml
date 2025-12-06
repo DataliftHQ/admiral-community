@@ -1,0 +1,73 @@
+name: Welcome New Contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome first-time contributors
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const creator = context.payload.sender.login;
+            const isIssue = !!context.payload.issue;
+            const item = context.payload.issue || context.payload.pull_request;
+            
+            // Check if this is the user's first contribution
+            // Use per_page: 2 to efficiently check if this is their first (only need to know if count <= 1)
+            const { data: contributions } = isIssue
+              ? await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  creator: creator,
+                  state: 'all',
+                  per_page: 2
+                })
+              : await github.rest.pulls.list({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  state: 'all',
+                  creator: creator,
+                  per_page: 2
+                });
+
+            // If this is their first contribution
+            if (contributions.length === 1) {
+              const message = isIssue
+                ? `👋 Welcome to the Admiral community, @${creator}!
+
+Thank you for opening your first issue! A team member will review it soon.
+
+While you wait, you might want to:
+- 📖 Check out our [documentation](https://docs.admiral.io)
+- 💬 Join the [discussion](https://github.com/DataliftHQ/admiral-community/discussions)
+- ⭐ Star this repo if you find Admiral useful
+
+We appreciate your contribution! 🚀`
+                : `🎉 Thank you for your first contribution, @${creator}!
+
+A team member will review your PR soon.
+
+Please make sure:
+- ✅ Your changes follow our [contributing guidelines](https://github.com/DataliftHQ/admiral-community/blob/main/CONTRIBUTING.md)
+- ✅ All tests pass
+- ✅ You've added any necessary documentation
+
+We're excited to have you as part of the Admiral community! 🙌`;
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: item.number,
+                body: message
+              });
+            }
